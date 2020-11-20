@@ -14,4 +14,4 @@ def OMP(sparsity, x, B):
         selected_indices.sort()
         c = np.linalg.pinv(B[selected_indices] @ B[selected_indices].T) @ B[selected_indices] @ x
         r = x - B[selected_indices].T @ c
-    return B[selected_indices].T @ c, sum(r**2)
+    return B[selected_indices].T @ c, (sum(r**2))**0.5
