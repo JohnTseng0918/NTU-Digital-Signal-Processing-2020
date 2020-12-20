@@ -36,7 +36,7 @@ for i in range(epoch):
         x, _ = data
         groud_truth = x.clone()
 
-        x = random_inpainting(x, 3)
+        x = transforms.RandomErasing(p=1,value=0.5,scale=(0.1, 0.3))(x)
         x = x.to(device)
         groud_truth = groud_truth.to(device)
         

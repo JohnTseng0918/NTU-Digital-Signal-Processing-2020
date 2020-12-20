@@ -33,7 +33,7 @@ for data in testloader:
     groud_truth = x.clone()
     groud_truth_img = transforms.ToPILImage()(torch.squeeze(groud_truth))
     groud_truth_img.save("./pic/ground_"+str(counter+1),"JPEG")
-    x = random_inpainting(x, 3)
+    x = transforms.RandomErasing(p=1,value=0.5,scale=(0.1, 0.3))(x)
     x_img = transforms.ToPILImage()(torch.squeeze(x))
     x_img.save("./pic/damage_"+str(counter+1),"JPEG")
     x = x.to(device)

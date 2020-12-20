@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 class encoder(nn.Module):
     def __init__(self, hidden_dim):
@@ -22,7 +23,7 @@ class decoder(nn.Module):
         return y
 
 class autoencoder(nn.Module):
-    def __init__(self, hidden_dim = 256):
+    def __init__(self, hidden_dim = 4096):
         super(autoencoder, self).__init__()
         self.encoder = encoder(hidden_dim)
         self.decoder = decoder(hidden_dim)
