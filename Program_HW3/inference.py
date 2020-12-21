@@ -36,12 +36,12 @@ for data in testloader:
     # save origin image as ground truth
     groud_truth = x.clone()
     groud_truth_img = transforms.ToPILImage()(torch.squeeze(groud_truth))
-    groud_truth_img.save("./pic/ground_"+str(counter+1),"JPEG")
+    groud_truth_img.save("./ground_"+str(counter+1),"JPEG")
 
     # RandomErasing image
     x = transforms.RandomErasing(p=1,value=0.5,scale=(0.1, 0.3))(x)
     x_img = transforms.ToPILImage()(torch.squeeze(x))
-    x_img.save("./pic/damage_"+str(counter+1),"JPEG")
+    x_img.save("./damage_"+str(counter+1),"JPEG")
     
     # to device (GPU)
     x = x.to(device)
@@ -59,7 +59,7 @@ for data in testloader:
     prediction = postprocessing(groud_truth, x, prediction)
     prediction_img = torch.squeeze(prediction)
     prediction_img = transforms.ToPILImage()(prediction.view(1,28,28))
-    prediction_img.save("./pic/reconstruction_"+str(counter+1),"JPEG")
+    prediction_img.save("./reconstruction_"+str(counter+1),"JPEG")
 
     loss_2 = F.mse_loss(prediction, groud_truth.view(groud_truth.size(0),-1).to("cpu"))
     
