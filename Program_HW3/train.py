@@ -8,6 +8,7 @@ from autoencoder import autoencoder
 from utils import *
 import argparse
 
+# read arguments
 parser = argparse.ArgumentParser()
 parser.add_argument("--epoch", default = 10, help="number of epoch", type=int)
 parser.add_argument("--num", default = "0,1,2,3,4,5,6,7,8,9", help="number", type=str)
@@ -17,17 +18,18 @@ epoch = args.epoch
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+# process dataset
 trainset = MNIST('./data', download=True, train=True, transform=transforms.ToTensor())
-
 tar = list(map(int, args.num.split(",")))
 trainset = get_target(trainset, tar)
 
 trainloader = DataLoader(trainset, batch_size=128, shuffle=True)
 
+# declare model
 model = autoencoder()
 model = model.to(device)
-
 model.train()
+
 optimizer = optim.Adam(model.parameters())
 
 for i in range(epoch):
