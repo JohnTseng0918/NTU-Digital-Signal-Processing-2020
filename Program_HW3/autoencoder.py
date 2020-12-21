@@ -23,7 +23,7 @@ class decoder(nn.Module):
         return y
 
 class autoencoder(nn.Module):
-    def __init__(self, hidden_dim = 4096):
+    def __init__(self, hidden_dim = 128):
         super(autoencoder, self).__init__()
         self.encoder = encoder(hidden_dim)
         self.decoder = decoder(hidden_dim)

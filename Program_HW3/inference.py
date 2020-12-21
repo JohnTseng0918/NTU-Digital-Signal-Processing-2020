@@ -45,21 +45,25 @@ for data in testloader:
     
     # to device (GPU)
     x = x.to(device)
-    groud_truth = groud_truth.to(device)
+    groud_truth = groud_truth.to(device)    
         
     prediction = model(x.view(x.size(0),-1))
     loss = F.mse_loss(prediction, groud_truth.view(groud_truth.size(0),-1))
     
     # process prediction image
     prediction = prediction.to("cpu")
+    # normalize
     prediction -= torch.min(prediction)
     prediction /= torch.max(prediction)
+    # postprocesing
     prediction = postprocessing(groud_truth, x, prediction)
     prediction_img = torch.squeeze(prediction)
     prediction_img = transforms.ToPILImage()(prediction.view(1,28,28))
     prediction_img.save("./pic/reconstruction_"+str(counter+1),"JPEG")
+
+    loss_2 = F.mse_loss(prediction, groud_truth.view(groud_truth.size(0),-1).to("cpu"))
     
-    print(loss.item())
+    print(loss.item(),loss_2.item())
     counter += 1
     if counter == args.pic:
         break
