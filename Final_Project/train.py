@@ -4,7 +4,6 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 import torch.optim as optim
 from model import *
-from utils import *
 
 train_data, train_label = np.load("./Data/traindata.npy"), np.load("./Data/trainlabel.npy")
 val_data, val_label = np.load("./Data/validationdata.npy"), np.load("./Data/validationlabel.npy")
@@ -26,7 +25,7 @@ train_loader = DataLoader(dataset = trainset, batch_size = 128, shuffle= True)
 val_loader = DataLoader(dataset = validationset, batch_size = 64, shuffle=False)
 model = model().to(device)
 
-num_epoch = 50
+num_epoch = 100
 optimizer = optim.Adam(model.parameters(),weight_decay=0.001)
 
 def evaluation(outputs, labels):
@@ -72,17 +71,19 @@ def validation(val_loader, device, model, criterion, num_data):
             total_loss += loss.item()
         print("Valid | Average Loss:{:.5f} Total Acc: {:.3f} ".format(total_loss/num_batch, total_acc*100/num_data))
     
-    return total_acc
+    return total_acc, total_loss
 
 
 
 criterion = nn.CrossEntropyLoss()
 maxacc = 0
+minloss = 99999999
 for epoch in range(num_epoch):
     train(train_loader, device, model, optimizer, criterion, epoch, len(train_data))
-    acc = validation(val_loader,device,model,criterion,len(val_data))
-    if maxacc < acc:
+    acc, tloss = validation(val_loader,device,model,criterion,len(val_data))
+    if maxacc <= acc and minloss >= tloss:
         maxacc = acc
+        minloss = tloss
         torch.save(model.state_dict(), "model.pth")
         print("Get the Highest Accuracy, Save the model")
     print("--------------------------------------------------------")
