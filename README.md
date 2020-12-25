@@ -7,3 +7,5 @@
   - Orthogonal Matching Pursuit on MNIST Dataset
 - Program Homework 3
   - Image Inpainting using Linear Autoencoder
+- Final Project
+  - Bearing health condition classification 軸承健康狀態分類
