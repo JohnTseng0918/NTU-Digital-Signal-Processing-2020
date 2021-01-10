@@ -8,8 +8,13 @@
 - train.py
   - training and validation
   - 會產生model.pth
+  - 有 --epoch 可以使用
+    - 預設epoch為100
 - inference.py
   - 做為inference使用，會載入model和data，並且產生myAns.csv檔
+
+## 資料說明
+- 資料請放在Data資料夾中才能執行
 
 ## 程式執行方式
     python train.py

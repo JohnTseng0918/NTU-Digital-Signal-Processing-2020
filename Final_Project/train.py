@@ -4,6 +4,12 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 import torch.optim as optim
 from model import *
+import argparse
+
+# read arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("--epoch", default = 100, help="number of epoch", type=int)
+args = parser.parse_args()
 
 train_data, train_label = np.load("./Data/traindata.npy"), np.load("./Data/trainlabel.npy")
 val_data, val_label = np.load("./Data/validationdata.npy"), np.load("./Data/validationlabel.npy")
@@ -25,7 +31,7 @@ train_loader = DataLoader(dataset = trainset, batch_size = 128, shuffle= True)
 val_loader = DataLoader(dataset = validationset, batch_size = 64, shuffle=False)
 model = model().to(device)
 
-num_epoch = 100
+num_epoch = args.epoch
 optimizer = optim.Adam(model.parameters(),weight_decay=0.001)
 
 def evaluation(outputs, labels):
